@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>MDIA 2294 Assignment 1 - Johann Chua - A01174894</title>
+	
+	<style>
+	    thead{
+	        font-weight:bold;
+	    }
+	    
+	    td{
+	        padding-left:5px;
+	        padding-right:5px;	        
+	    }
+	    
+	    td.sub-total{
+	        text-align:right;	        
+	    }
+	</style>
+</head>
+<body>
+	<h1>MDIA 2294: ACME Corp Invoice</h1>
+	
+	<table>
+	    <thead>
+	        <tr>
+	            <td>ITEM</td>
+	            <td>DESCRIPTION</td>
+	            <td>QTY</td>
+	            <td>PRICE</td>
+	            <td>LINE TOTAL</td>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr>
+	            <td>1</td>
+	            <td><input id="line-1-description" type="text" size="40" value="Anvil" /></td>
+	            <td><input id="line-1-quantity" type="text" size="3" value="5" /></td>
+	            <td><input id="line-1-price" type="text" size="6" value="35.00" /></td>
+	            <td class="sub-total"><span id="line-1"></span></td>
+	        </tr>
+	        <tr>
+	            <td>2</td>
+	            <td><input id="line-2-description" type="text" size="40" value="Rocket Skates (each)" /></td>
+	            <td><input id="line-2-quantity" type="text" size="3" value="2" /></td>
+	            <td><input id="line-2-price" type="text" size="6" value="24.99" /></td>
+	            <td class="sub-total"><span id="line-2"></span></td>
+	        </tr>
+	        <tr>
+	            <td>3</td>
+	            <td><input id="line-3-description" type="text" size="40" value="Giant Magnet" /></td>
+	            <td><input id="line-3-quantity" type="text" size="3" value="1" /></td>
+	            <td><input id="line-3-price" type="text" size="6" value="125.50" /></td>
+	            <td class="sub-total"><span id="line-3"></span></td>
+	        </tr>
+	        <tr>
+	            <td>4</td>
+	            <td><input id="line-4-description" type="text" size="40" value="Ball bearings" /></td>
+	            <td><input id="line-4-quantity" type="text" size="3" value="1000" /></td>
+	            <td><input id="line-4-price" type="text" size="6" value="0.25" /></td>
+	            <td class="sub-total"><span id="line-4"></span></td>
+	        </tr>
+	        <tr>
+	            <td>5</td>
+	            <td><input id="line-5-description" type="text" size="40" value="Portable holes" /></td>
+	            <td><input id="line-5-quantity" type="text" size="3" value="12" /></td>
+	            <td><input id="line-5-price" type="text" size="6" value="15.25" /></td>
+	            <td class="sub-total"><span id="line-5"></span></td>
+	        </tr>
+	    </tbody>
+	    <tfoot>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">SUB TOTAL</td>  
+	            <td class="sub-total"><span id="sub-total"></span></td>	        
+	        </tr>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">DISCOUNT</td>  
+	            <td class="sub-total"><span id="discount"></span></td>	        
+	        </tr>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">TAX</td>  
+	            <td class="sub-total"><span id="tax"></span></td>	        
+	        </tr>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">TOTAL</td>  
+	            <td class="sub-total" style="border-top:solid black 1px"><span id="Total"></span></td>	        
+	        </tr>
+	    </tfoot>	    
+	</table>
+	
+	<div><button id="calculate">Calculate</button></div>
+	<div>NOTE: discounts of 10% are given to orders over $250</div>
+
+	<script>
+
+		// Johann Chua - A01174894 - Assignment 1
+
+        //  Constant Variable for the button to reference to it later and attach the event listener to the function
+		const calcBtn = document.querySelector("#calculate");
+
+        // Creating Global constant variables for tax and discount because they do not change
+		const discount = 0.1;
+		const tax = 0.12;
+
+	    function calculate() {
+            // Local Variables for finalTotal(subtotal) which is used for the running total and lineTotal used to calculate each line item
+            let finalTotal = 0;
+            let line_total = 0;
+
+            // saving the item 1's quantity and price  input value to a new variable to be able to multiply both quantity and price together in a new line of instructions after the retrieval of information
+            var item1_quantity = document.querySelector("#line-1-quantity").value;
+			var item1_price = document.querySelector("#line-1-price").value;
+            // line_total calculated from item1_price * item2_quantity
+            line_total = item1_price * item1_quantity;
+            // retrieving the blank info of line 1 total and displaying the new line_total value after above calculations
+			// .toFixed(2) attached to the total to make values show only to 2 decimal places AND the dollar sign string for concatenation 
+            document.querySelector("#line-1").innerText = "$" + line_total.toFixed(2);
+            // Addition Assignment to attach the line_total into finalTotal variable acting as the "running total for each line"
+            finalTotal += line_total;
+
+            // creating variables for item 2 Q and P to be able to reference to them later for calculations
+            var item2_quantity = document.querySelector("#line-2-quantity").value;
+            var item2_price = document.querySelector("#line-2-price").value;
+            // line_total calculated from item 2 q * p
+            line_total = item2_price * item2_quantity;
+            // retrieving blank info from html for  #line-2 and displaying the new line_total calculation while concatenating string and toFixed(2) again
+            document.querySelector("#line-2").innerText = "$" + line_total.toFixed(2);
+            // running total calculation for finalTotal 
+            finalTotal += line_total;
+
+            // Creating variables for item 3 Q and P and grabbing the user inputted value
+            var item3_quantity = document.querySelector("#line-3-quantity").value;
+            var item3_price = document.querySelector("#line-3-price").value;
+            // Calculating above lines into line_total
+            line_total = item3_price * item3_quantity;
+            // displaying new line total into html
+            document.querySelector("#line-3").innerText = "$" + line_total.toFixed(2);
+            // calculated number added into finalTotal for running calculation
+            finalTotal += line_total;
+
+            // Variables for item 4 Q and P 
+            var item4_quantity = document.querySelector("#line-4-quantity").value;
+            var item4_price = document.querySelector("#line-4-price").value;
+            // Calculating line_total again for item 4
+            line_total = item4_price * item4_quantity;
+            // Retrieving info from html to attach new line_total for line 4
+            document.querySelector("#line-4").innerText = "$" + line_total.toFixed(2);
+            // Running Total Calc
+            finalTotal += line_total;
+
+            // Create variable for item 5 Q and P 
+            var item5_quantity = document.querySelector("#line-5-quantity").value;
+            var item5_price = document.querySelector("#line-5-price").value;
+            // New line_total calculation 
+            line_total = item5_price * item5_quantity;
+            // attach new line total into #line-5 
+            document.querySelector("#line-5").innerText = "$" + line_total.toFixed(2);
+            // Running total calc
+            finalTotal += line_total;
+
+            document.querySelector("#sub-total").innerText = "$" + finalTotal.toFixed(2);
+
+            // Discount
+
+            // Ternary Operator, creating a new local variable and running the operator  for if finalTotal > 250,
+            // new variable will be attached with a value depending on if the statement is true or false, (statement?true:false)
+            let applyDiscount = finalTotal >= 250 ? finalTotal *discount : 0;
+            // attaching the new variable made in above line into the HTML for #discount, concatenation, 2 decimal places
+            document.querySelector("#discount").innerText = "$" + applyDiscount.toFixed(2);
+
+            // Tax
+
+            // New Variable for tax_amount
+            // First part of the operation is put into brackets to make sure that taxed amount is changed to new values of after the discount has been applied, if done without it, tax would be multiplying by the values of line 168 first then be subtracted from finalTotal
+            tax_amount = (finalTotal - applyDiscount) * tax;
+            document.querySelector("#tax").innerText = "$" + tax_amount.toFixed(2);
+
+            // Grand Total
+
+            // New Grand total variable with all "final" calculations and display into html
+            grandTotal = (finalTotal - applyDiscount) + tax_amount;
+            document.querySelector("#Total").innerText = "$" + grandTotal.toFixed(2);
+	    }
+        // Event Listener to see when user clicks on the button (variable of calcBtn comes from the first global variable in the code)
+		calcBtn.addEventListener("click", calculate);
+	
+    </script>
+</body>
+</html>
